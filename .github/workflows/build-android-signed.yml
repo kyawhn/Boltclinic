@@ -1,0 +1,95 @@
+name: Build Signed Android APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Setup Java JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install NativeScript CLI
+      run: npm install -g @nativescript/cli
+      
+    - name: Add Android platform
+      run: ns platform add android
+      
+    - name: Create keystore directory
+      run: mkdir -p android-keys
+      
+    - name: Decode keystore
+      if: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android-keys/release.keystore
+      
+    - name: Build signed APK
+      if: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      run: |
+        ns build android --release --env.production \
+          --key-store-path android-keys/release.keystore \
+          --key-store-password "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+          --key-store-alias "${{ secrets.ANDROID_KEY_ALIAS }}" \
+          --key-store-alias-password "${{ secrets.ANDROID_KEY_PASSWORD }}"
+      
+    - name: Build unsigned APK (fallback)
+      if: ${{ !secrets.ANDROID_KEYSTORE_BASE64 }}
+      run: ns build android --release --env.production
+      
+    - name: Upload Signed APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: clinic-management-signed-apk
+        path: platforms/android/app/build/outputs/apk/release/*.apk
+        
+    - name: Create Release with Signed APK
+      uses: softprops/action-gh-release@v1
+      with:
+        name: Clinic Management App ${{ github.ref_name }}
+        body: |
+          ## Clinic Management App Release
+          
+          ### Features
+          - 📊 Dashboard with appointment overview
+          - 👥 Patient management system
+          - 📅 Appointment scheduling
+          - 💰 Financial tracking
+          - 📱 Offline functionality with CSV storage
+          
+          ### Installation
+          1. Download the APK file below
+          2. Enable "Install from unknown sources" on your Android device
+          3. Install the APK file
+          
+          ### Version Info
+          - Version: ${{ github.ref_name }}
+          - Build: ${{ github.run_number }}
+          - Commit: ${{ github.sha }}
+        files: |
+          platforms/android/app/build/outputs/apk/release/*.apk
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

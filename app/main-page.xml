@@ -1,0 +1,62 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+    <ActionBar title="Clinic Management" class="bg-blue-600">
+        <ActionItem icon="font://&#xf013;" class="text-white" tap="{{ onSettingsTap }}" ios.position="right" android.position="actionBar" />
+    </ActionBar>
+
+    <ScrollView>
+        <StackLayout class="p-4 bg-gray-50">
+            <!-- Header Statistics -->
+            <Label text="Dashboard Overview" class="text-2xl font-bold text-gray-800 mb-4" />
+            
+            <GridLayout columns="*, *" rows="auto, auto" class="mb-6">
+                <StackLayout col="0" row="0" class="bg-blue-100 rounded-lg p-4 m-1">
+                    <Label text="{{ todayAppointments }}" class="text-3xl font-bold text-blue-600 text-center" />
+                    <Label text="Today's Appointments" class="text-sm text-blue-800 text-center" />
+                </StackLayout>
+                
+                <StackLayout col="1" row="0" class="bg-green-100 rounded-lg p-4 m-1">
+                    <Label text="{{ totalPatients }}" class="text-3xl font-bold text-green-600 text-center" />
+                    <Label text="Total Patients" class="text-sm text-green-800 text-center" />
+                </StackLayout>
+                
+                <StackLayout col="0" row="1" class="bg-purple-100 rounded-lg p-4 m-1">
+                    <Label text="{{ monthlyIncome }}" class="text-2xl font-bold text-purple-600 text-center" />
+                    <Label text="Monthly Income" class="text-sm text-purple-800 text-center" />
+                </StackLayout>
+                
+                <StackLayout col="1" row="1" class="bg-orange-100 rounded-lg p-4 m-1">
+                    <Label text="{{ pendingAppointments }}" class="text-3xl font-bold text-orange-600 text-center" />
+                    <Label text="Pending" class="text-sm text-orange-800 text-center" />
+                </StackLayout>
+            </GridLayout>
+
+            <!-- Quick Search -->
+            <Label text="Quick Patient Search" class="text-lg font-semibold text-gray-800 mb-2" />
+            <StackLayout class="bg-white rounded-lg p-4 mb-4 shadow-sm">
+                <TextField hint="Search patients by name..." text="{{ searchText }}" class="border border-gray-300 rounded p-3 mb-3" />
+                <Button text="Search" tap="{{ onSearchPatients }}" class="bg-blue-600 text-white rounded p-3" />
+            </StackLayout>
+
+            <!-- Main Navigation -->
+            <Label text="Main Menu" class="text-lg font-semibold text-gray-800 mb-3" />
+            
+            <Button text="📅 Appointments" tap="{{ onAppointmentsTap }}" class="bg-blue-600 text-white rounded-lg p-4 mb-3 text-lg" />
+            <Button text="👥 Patients" tap="{{ onPatientsTap }}" class="bg-green-600 text-white rounded-lg p-4 mb-3 text-lg" />
+            <Button text="💰 Financial Records" tap="{{ onFinancialTap }}" class="bg-purple-600 text-white rounded-lg p-4 mb-3 text-lg" />
+            <Button text="📊 Reports" tap="{{ onReportsTap }}" class="bg-orange-600 text-white rounded-lg p-4 mb-3 text-lg" />
+
+            <!-- Recent Activities -->
+            <Label text="Recent Activities" class="text-lg font-semibold text-gray-800 mb-3 mt-4" />
+            <StackLayout class="bg-white rounded-lg p-4 shadow-sm">
+                <Repeater items="{{ recentActivities }}">
+                    <Repeater.itemTemplate>
+                        <StackLayout class="border-b border-gray-200 pb-2 mb-2">
+                            <Label text="{{ activity }}" class="text-gray-800" textWrap="true" />
+                            <Label text="{{ time }}" class="text-xs text-gray-500" />
+                        </StackLayout>
+                    </Repeater.itemTemplate>
+                </Repeater>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</Page>

@@ -1,0 +1,25 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+    <ActionBar title="Patients" class="bg-green-600">
+        <NavigationButton text="Back" android.systemIcon="ic_menu_back" tap="{{ onBackTap }}" />
+        <ActionItem text="Add" tap="{{ onAddPatientTap }}" ios.position="right" android.position="actionBar" />
+    </ActionBar>
+
+    <GridLayout rows="auto, *">
+        <!-- Search Section -->
+        <StackLayout row="0" class="bg-white p-4 border-b border-gray-200">
+            <TextField hint="Search patients..." text="{{ searchQuery }}" class="border border-gray-300 rounded p-3" />
+        </StackLayout>
+
+        <!-- Patients List -->
+        <ListView row="1" items="{{ filteredPatients }}" separatorColor="transparent" class="bg-gray-50">
+            <ListView.itemTemplate>
+                <StackLayout class="bg-white m-2 rounded-lg p-4 shadow-sm" tap="{{ $parents['Page'].bindingContext.onPatientTap }}">
+                    <Label text="{{ name }}" class="text-lg font-semibold text-gray-800" />
+                    <Label text="{{ age }} years • {{ gender }}" class="text-sm text-gray-600" />
+                    <Label text="{{ phone }}" class="text-sm text-blue-600" />
+                    <Label text="Last visit: {{ lastVisit || 'Never' }}" class="text-xs text-gray-500" />
+                </StackLayout>
+            </ListView.itemTemplate>
+        </ListView>
+    </GridLayout>
+</Page>

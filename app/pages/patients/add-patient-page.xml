@@ -1,0 +1,52 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+    <ActionBar title="Add Patient" class="bg-green-600">
+        <NavigationButton text="Back" android.systemIcon="ic_menu_back" tap="{{ onBackTap }}" />
+        <ActionItem text="Save" tap="{{ onSaveTap }}" ios.position="right" android.position="actionBar" />
+    </ActionBar>
+
+    <ScrollView class="bg-gray-50">
+        <StackLayout class="p-4">
+            <StackLayout class="bg-white rounded-lg p-4 mb-4 shadow-sm">
+                <Label text="Personal Information" class="text-lg font-semibold text-gray-800 mb-3" />
+                
+                <Label text="Full Name *" class="text-sm text-gray-600 mb-1" />
+                <TextField text="{{ name }}" hint="Enter full name" class="border border-gray-300 rounded p-3 mb-3" />
+                
+                <GridLayout columns="*, *" class="mb-3">
+                    <StackLayout col="0" class="pr-2">
+                        <Label text="Age *" class="text-sm text-gray-600 mb-1" />
+                        <TextField text="{{ age }}" hint="Age" keyboardType="number" class="border border-gray-300 rounded p-3" />
+                    </StackLayout>
+                    <StackLayout col="1" class="pl-2">
+                        <Label text="Gender *" class="text-sm text-gray-600 mb-1" />
+                        <Button text="{{ gender || 'Select Gender' }}" tap="{{ onGenderTap }}" class="border border-gray-300 rounded p-3 bg-white text-gray-800" />
+                    </StackLayout>
+                </GridLayout>
+                
+                <Label text="Phone Number *" class="text-sm text-gray-600 mb-1" />
+                <TextField text="{{ phone }}" hint="Phone number" keyboardType="phone" class="border border-gray-300 rounded p-3 mb-3" />
+                
+                <Label text="Email" class="text-sm text-gray-600 mb-1" />
+                <TextField text="{{ email }}" hint="Email address" keyboardType="email" class="border border-gray-300 rounded p-3 mb-3" />
+                
+                <Label text="Address" class="text-sm text-gray-600 mb-1" />
+                <TextView text="{{ address }}" hint="Full address" class="border border-gray-300 rounded p-3 h-20 mb-3" />
+            </StackLayout>
+
+            <StackLayout class="bg-white rounded-lg p-4 mb-4 shadow-sm">
+                <Label text="Medical Information" class="text-lg font-semibold text-gray-800 mb-3" />
+                
+                <Label text="Medical History" class="text-sm text-gray-600 mb-1" />
+                <TextView text="{{ medicalHistory }}" hint="Previous medical conditions, surgeries, etc." class="border border-gray-300 rounded p-3 h-24 mb-3" />
+                
+                <Label text="Allergies" class="text-sm text-gray-600 mb-1" />
+                <TextView text="{{ allergies }}" hint="Known allergies to medications, food, etc." class="border border-gray-300 rounded p-3 h-20 mb-3" />
+                
+                <Label text="Emergency Contact *" class="text-sm text-gray-600 mb-1" />
+                <TextField text="{{ emergencyContact }}" hint="Name and phone number" class="border border-gray-300 rounded p-3 mb-3" />
+            </StackLayout>
+
+            <Button text="Save Patient" tap="{{ onSaveTap }}" class="bg-green-600 text-white rounded-lg p-4 text-lg font-semibold" />
+        </StackLayout>
+    </ScrollView>
+</Page>

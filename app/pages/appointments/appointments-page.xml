@@ -1,0 +1,39 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+    <ActionBar title="Appointments" class="bg-blue-600">
+        <NavigationButton text="Back" android.systemIcon="ic_menu_back" tap="{{ onBackTap }}" />
+        <ActionItem text="Add" tap="{{ onAddAppointmentTap }}" ios.position="right" android.position="actionBar" />
+    </ActionBar>
+
+    <GridLayout rows="auto, auto, *">
+        <!-- Date Filter -->
+        <StackLayout row="0" class="bg-white p-4 border-b border-gray-200">
+            <GridLayout columns="*, auto">
+                <Label col="0" text="{{ selectedDate }}" class="text-lg font-semibold text-gray-800 p-3 border border-gray-300 rounded" />
+                <Button col="1" text="📅" tap="{{ onDatePickerTap }}" class="bg-blue-600 text-white rounded ml-2 w-12 h-12" />
+            </GridLayout>
+        </StackLayout>
+
+        <!-- Status Filter -->
+        <StackLayout row="1" orientation="horizontal" class="bg-gray-100 p-2">
+            <Button text="All" tap="{{ onFilterAll }}" class="{{ allSelected ? 'bg-blue-600 text-white' : 'bg-white text-gray-800' }} rounded px-3 py-2 mr-2" />
+            <Button text="Scheduled" tap="{{ onFilterScheduled }}" class="{{ scheduledSelected ? 'bg-blue-600 text-white' : 'bg-white text-gray-800' }} rounded px-3 py-2 mr-2" />
+            <Button text="Completed" tap="{{ onFilterCompleted }}" class="{{ completedSelected ? 'bg-blue-600 text-white' : 'bg-white text-gray-800' }} rounded px-3 py-2 mr-2" />
+        </StackLayout>
+
+        <!-- Appointments List -->
+        <ListView row="2" items="{{ filteredAppointments }}" separatorColor="transparent" class="bg-gray-50">
+            <ListView.itemTemplate>
+                <StackLayout class="bg-white m-2 rounded-lg p-4 shadow-sm" tap="{{ $parents['Page'].bindingContext.onAppointmentTap }}">
+                    <GridLayout columns="*, auto">
+                        <StackLayout col="0">
+                            <Label text="{{ patientName }}" class="text-lg font-semibold text-gray-800" />
+                            <Label text="{{ time }} • {{ type }}" class="text-sm text-blue-600" />
+                            <Label text="{{ notes }}" class="text-sm text-gray-600" textWrap="true" />
+                        </StackLayout>
+                        <Label col="1" text="{{ status }}" class="{{ status === 'Scheduled' ? 'bg-yellow-100 text-yellow-800' : status === 'Completed' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }} rounded px-2 py-1 text-xs" />
+                    </GridLayout>
+                </StackLayout>
+            </ListView.itemTemplate>
+        </ListView>
+    </GridLayout>
+</Page>
